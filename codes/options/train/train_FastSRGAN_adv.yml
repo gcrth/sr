@@ -1,0 +1,96 @@
+#### general settings
+name: FastSRGANx4_adv_DIV2K
+use_tb_logger: true
+model: srgan
+distortion: sr
+scale: 4
+gpu_ids: [0]
+# resume_latest: true
+
+attack:
+  eps: 0.015
+  raw_data: true
+adv_train:
+  m: 4
+  step: 0.01
+
+#### datasets
+datasets:
+  train:
+    name: DIV2K
+    mode: LQGT
+    dataroot_GT: ../../data/DIV2K/train/HR/x4
+    dataroot_LQ: ../../data/DIV2K/train/LR/x4
+
+    use_shuffle: true
+    n_workers: 6  # per GPU
+    batch_size: 16
+    GT_size: 128
+    use_flip: true
+    use_rot: true
+    color: RGB
+  val:
+    name: Set14
+    mode: LQGT
+    dataroot_GT: ../../data/Set14/HR/x4
+    dataroot_LQ: ../../data/Set14/LR/x4
+
+#### network structures
+network_G:
+  which_model_G: FastNet
+  in_nc: 3
+  out_nc: 3
+  nf: 64
+  nb: 23
+network_D:
+  which_model_D: discriminator_vgg_128
+  in_nc: 3
+  nf: 64
+  # is_depthwise_separable_convolutions: true
+network_F:
+  # which_model_F: squeezenet
+  which_model_F: VGG
+  # which_model_F: shufflenet
+  # which_model_F: mobilenet
+  
+
+#### path
+path:
+  pretrain_model_G: ../experiments/pretrained_models/FastSRGANx4_adv_DIV2K_pretrained_v0.1.pth
+  strict_load: true
+  resume_state: ~
+
+#### training settings: learning rate scheme, loss
+train:
+  lr_G: !!float 1e-4
+  weight_decay_G: 0
+  beta1_G: 0.9
+  beta2_G: 0.99
+  lr_D: !!float 1e-4
+  weight_decay_D: 0
+  beta1_D: 0.9
+  beta2_D: 0.99
+  lr_scheme: MultiStepLR
+
+  niter: 400000
+  warmup_iter: -1
+  lr_steps: [50000, 100000, 200000, 300000]
+  lr_gamma: 0.5
+
+  pixel_criterion: l1
+  pixel_weight: !!float 1e-2
+  feature_criterion: l1
+  feature_weight: !!float 1
+  gan_type: ragan  # gan | ragan
+  gan_weight: !!float 5e-3
+
+  D_update_ratio: 1
+  D_init_iters: 0
+
+  manual_seed: 10
+  val_freq: !!float 5e3
+
+#### logger
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 5e3

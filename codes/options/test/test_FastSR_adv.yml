@@ -1,0 +1,62 @@
+# name: FastSR_x4_adv
+# name: FastSRGAN_x4_adv
+name: FastSR_retrain_x4_adv
+# name: FastSRGAN_retrain_x4_adv
+
+name: FastSR_retrain_x4
+name: FastSRGAN_retrain_x4
+
+suffix: ~
+model: sr
+distortion: sr
+scale: 4
+crop_border: ~
+gpu_ids: [0]
+
+attack:
+  type: fgsm
+  eps: 0.015
+
+# attack:
+#   type: pgd
+#   eps: 0.015
+#   step_num: 10
+#   step: 0.003
+
+pixel_criterion: l1
+pixel_weight: !!float 1.0
+
+datasets:
+  test_1:  
+    name: Set5
+    mode: LQGT
+    dataroot_GT: ../../data/Set5/HR/x4
+    dataroot_LQ: ../../data/Set5/LR/x4
+
+  test_2:  
+    name: Set14
+    mode: LQGT
+    dataroot_GT: ../../data/Set14/HR/x4
+    dataroot_LQ: ../../data/Set14/LR/x4
+    
+  test_3:  
+    name: BSDS100
+    mode: LQGT
+    dataroot_GT: ../../data/BSDS100/HR/x4
+    dataroot_LQ: ../../data/BSDS100/LR/x4
+
+#### network structures
+network_G:
+  which_model_G: FastNet
+  in_nc: 3
+  out_nc: 3
+  nf: 64
+  nb: 23
+  upscale: 4
+
+#### path
+path:
+  # pretrain_model_G: ../experiments/pretrained_models/FastSRx4_DIV2K_pretrained_v0.3.pth
+  # pretrain_model_G: ../experiments/pretrained_models/FastSRGANx4_DIV2K_pretrained_v0.1.pth
+  pretrain_model_G: ../experiments/pretrained_models/FastSRx4_adv_DIV2K_pretrained_v0.1.pth
+  # pretrain_model_G: ../experiments/pretrained_models/FastSRGANx4_adv_DIV2K_pretrained_v0.1.pth
