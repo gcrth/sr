@@ -18,7 +18,7 @@ pip install -r codes\requirements.txt
 
 ## Basic Usage
 
-You will need to prepare the dataset first. High resolution picture and Low resolution picture should be in different folder and have the same name. You may find the following link <https://github.com/xinntao/BasicSR/blob/master/docs/DatasetPreparation.md#Image-Super-Resolution> useful. Please note that this project will not use LMDB.
+You will need to prepare the dataset first. High resolution picture and Low resolution picture should be in different folder and have the same name. You may find the following link [doc](https://github.com/xinntao/BasicSR/blob/master/docs/DatasetPreparation.md#Image-Super-Resolution) useful. Please note that this project will not use LMDB.
 
 Training and testing details are included in yml files and you could find them in codes\options.
 
@@ -38,7 +38,7 @@ python test.py --opt options\test\test_FastSR.yml
 
 ### Common Image SR Datasets
 
-The following table is from <https://raw.githubusercontent.com/xinntao/BasicSR/master/docs/DatasetPreparation.md>.
+The following table is from [doc](https://github.com/xinntao/BasicSR/blob/master/docs/DatasetPreparation.md#Image-Super-Resolution).
 
 <table>
   <tr>
